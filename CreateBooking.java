@@ -10,7 +10,6 @@ import java.util.Date;
 
 import org.hamcrest.Matchers;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import io.restassured.http.ContentType;
@@ -47,7 +46,7 @@ public class CreateBooking extends TestBase{
 	            body("booking.bookingdates.checkin", Matchers.not(Matchers.isEmptyOrNullString())).
 	            body("booking.additionalneeds", Matchers.equalTo(additionalneeds));
 	        
-	        String yyyyMMdd1 = "1988-05-12";
+	      /*  String yyyyMMdd1 = "1988-05-12";
 	        String yyyyMMdd2 = "1754-01-25";
 
 	        formatter =new SimpleDateFormat("yyyy-MM-dd");
@@ -55,7 +54,35 @@ public class CreateBooking extends TestBase{
 	        convertedDate1 =(Date) formatter.parse(yyyyMMdd1);
 	        convertedDate2 =(Date) formatter.parse(yyyyMMdd2);
 	        System.out.println("Date from yyyyMMdd1 and yyyyMMdd2 Strings in Java : " + convertedDate1 + " "+convertedDate2);
-	    }
+	*/    }
+	   
+	        
+	   @Test(dataProvider = "bookingParameters")
+	    public void setBookingWithNullFirstname(String firstname, String lastname, int totalprice, boolean depositpaid, String bookingdates_checkin, String bookingdates_checkout, String additionalneeds) throws ParseException {
+	    	System.out.println("\nTest "+Thread.currentThread().getStackTrace()[1].getMethodName()+":\n");
+	    	BookingPostParams bookingPostParams = new BookingPostParams(null,lastname,totalprice,depositpaid,bookingdates_checkin,bookingdates_checkout,additionalneeds);
+	        given().
+	        when().
+	        spec(requestSpec).
+	        contentType(ContentType.JSON).
+	        header("Accept", "application/json").
+	        body(bookingPostParams).
+            post("/booking").
+	        then().
+	            assertThat().
+	            statusCode(500);
+	        logger.info("");
+	      /*  String yyyyMMdd1 = "1988-05-12";
+	        String yyyyMMdd2 = "1754-01-25";
+
+	        formatter =new SimpleDateFormat("yyyy-MM-dd");
+	
+	        convertedDate1 =(Date) formatter.parse(yyyyMMdd1);
+	        convertedDate2 =(Date) formatter.parse(yyyyMMdd2);
+	        System.out.println("Date from yyyyMMdd1 and yyyyMMdd2 Strings in Java : " + convertedDate1 + " "+convertedDate2);
+	*/    }
+	   
+	        
 	   
 	   @DataProvider
 	    public static Object[][] bookingParameters() {

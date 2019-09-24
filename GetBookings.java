@@ -34,7 +34,7 @@ public class GetBookings extends TestBase{
         then().
             assertThat().
             spec(responseSpec).
-            body("bookingid", Matchers.hasItems(8));
+            body("bookingid", Matchers.hasItems(7,1));
     } 
     
 	@DataProvider
